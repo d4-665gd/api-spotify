@@ -1,0 +1,259 @@
+cambios de ProductoLista.tsx:
+* grid grid-cols-3 para mostrar 3 columnas 
+(se adapta a pantallas pequeñas con sm:grid-cols-2 y grid-cols-1)
+* overflow-y-auto es para scroll vertical
+# Layout.tsx en la carpeta 'menu' para controlar las 3 paginas de menu.
+cuando entro a cualquier ruta de las paginas se renderiza BarraLateral adapta
+la izq. y el contenido corresp en lo demas.
+# en el apartado de Productos, al cliquear tarjeta te dirige a su descripcion
+por su id.
+para lograr hallar al producto al dar clic en un boton de
+la lista, se forza que el id sea un stringcrea la carpetas
+productos/[id]/page.tsx .
+si cantidad es menor a 1, se desabilita boton en carrito
+
+# MOstrar los productos agregados desde cualquier parte de la app
+mediante carrito y modificarCantidad.
+# usar const {agregarCarrito} dentro del componente
+mediante hook
+
+espués de que la lógica para agregar el producto al carrito se haya ejecutado 
+correctamente, actualiza el estado para mostrar el mensaje y establece su 
+contenido. Aquí es donde también integrarías la duración de 2 segundos. 
+
+en español muestra la implementacion de al 
+BarraLateral en las paginas de menu/carrito.
+
+'use client';
+
+import React from 'react';
+
+import { useCarrito } from '@/app/context/CarritoContext';
+import {BarraLateral} from '@/app/components/Menu';
+
+const CarritoPage = () => {
+  const {carrito, modificarCantidad} = useCarrito();
+
+  
+
+  const Total = () => {
+    return carrito.reduce((acc, item) => acc + item.cantidad * 10, 0);
+  };
+
+  return (
+    
+<div className="flex min-h-screen"> {/* Flex layout horizontal */}
+<BarraLateral setvistaActiva={function (vista: string): void {
+                  throw new Error('Function not implemented.');
+                } } /> 
+
+  
+
+  <div style={{ flexGrow: 1, padding: '1rem' }}>
+    <h3>Carrito de compras</h3>
+    {carrito.length === 0 ? (
+      <p>Tu carrito está vacío</p>
+    ) : (
+      carrito.map((item) => (
+        <div key={item.id} style={{ marginBottom: '1rem' }}>
+          <p>
+            {item.nombre} - {item.artista}
+          </p>
+          <div>
+            <button
+              onClick={() => modificarCantidad(item.id, item.cantidad - 1)}
+              disabled={item.cantidad <= 1}
+            >
+              -
+            </button>
+            <span style={{ margin: '0 0.5rem' }}>{item.cantidad}</span>
+            <button onClick={() => modificarCantidad(item.id, item.cantidad + 1)}>
+              +
+            </button>
+          </div>
+        </div>
+      ))
+    )}
+    <h4>Total: ${Total().toFixed(2)}</h4>
+  </div>
+</div>
+                
+
+
+ );
+
+} esta es la pagina de carrito y ahora te paso la de el componente Menu.tsx para eliminar el error antes mencionado: 'use client';
+import Link from 'next/link';
+import { useState } from 'react';
+import Image from 'next/image';
+import {IoLogoReact} from 'react-icons/io5';
+import {FaMusic,FaShoppingCart} from 'react-icons/fa';
+import {MdLibraryMusic} from 'react-icons/md';
+import { BarraLateralElem } from './BarraLateralElem';
+import React from 'react';
+//yarn add react-icons
+ 
+interface BarraLateralProps {
+    setvistaActiva : (vista: string) =>void;
+}
+
+const MenuElementos = [
+    {
+       id: "menu/productos",
+       icon: <FaMusic size={40} />,
+       title : "Productos",
+       subtitle: "Top 10 canciones"
+    },
+    {
+        id: "menu/producto",
+        icon: <MdLibraryMusic size={40} />,
+        title : "Producto",
+        subtitle: "Descripción del producto"
+     },
+     {
+        id: "menu/carrito",
+        icon: <FaShoppingCart size={40} />,
+        title : "Carrito",
+        subtitle: "Almacena tu compra aqui"
+     }
+];
+
+export const BarraLateral = ({setvistaActiva }:BarraLateralProps) => {
+    return (
+    <div id="menu" className="bg-gray-900 min-h-screen z-10 text-slate-300 w-64 left-0 overflow-y-scroll">
+        <div id="logo" className="my-4 px-6">
+            <h1 className="flex items-center text-lg md:text-2xl font-bold text-white">
+                <IoLogoReact className='mr-2' />
+                <span> Tienda </span> <span className='text-blue-500'> Spotify</span>
+            </h1>
+            <p className="text-slate-500 text-sm"> Tu catalogo musical</p>
+        </div>
+        <div id="profile" className="px-6 py-10">
+            <p className="text-slate-500">Bienvenido,</p>
+            <a href="#" className="inline-flex space-x-2 items-center">
+                <Image className="rounded-full w-8 h-8" 
+                src="https://images.unsplash.com/photo-1517686748843-bb360cfc62b3"
+                alt="User avatar"
+                width={50}
+                height={50}/>
+                <span className="text-sm md:text-base font-bold">Usuario Musical</span>
+            </a>
+        </div>
+
+                <div id="nav" className="w-full px-6">
+                    {MenuElementos.map( item => (
+                        <Link  href={/${item.id}} key={item.id}
+                        className="flex items-center space-x-3 p-3 hover:bg-white/10 rounded transition"
+                             >
+                             
+                            <div className="text-white">
+                                  {item.icon}
+                            </div>
+                            <div>
+                                <h2 className="text-slate-300 font-bold"> {item.title}</h2>
+                               <p className="text-sm text-slate-500">{item.subtitle}</p>
+                            </div>
+                            
+                        </Link >
+                    )) } 
+                </div>
+          </div> 
+    ); 
+};
+
+export default BarraLateral;   resuelve el error: Error: Element type is invalid: expected a string (for built-in components) or a class/function (for composite components) but got: undefined. You likely forgot to export your component from the file it's defined in, or you might have mixed up default and named imports.
+
+Check the render method of `ClientPageRoot`..
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ecordatorio pagprincipal
+
+"use client";
+import ProductoItem from "../components/ProductoItem";
+import Carrito from "../components/Carrito";
+import {BarraLateral} from '../components/Menu';
+
+import { useEffect, useState } from "react"; 
+
+const Pag_Principal =() =>{
+
+/* type Producto = {
+    id: string;
+    nombre: string;
+    artista: string;
+    
+};
+
+const [mensaje, setMensaje] = useState("");
+
+
+  
+
+    const [productos, SetProductos] = useState <Producto[]> ([]);
+    type ItemCarrito = Producto & {cantidad: number};
+    const [carrito, SetCarrito] = useState<ItemCarrito[]>([]);
+    const [productoSelec, setProductoSeleccionado] = useState<Producto | null> (null);
+   useEffect(() => {
+    //datos simulados
+    SetProductos(Canciones); 
+            }, []);
+
+
+        const ModifCantidad = (id: string, delta: number) =>{
+                    SetCarrito(prev =>
+                        prev.map(item =>
+                            item.id === id
+                            ? {
+                                ...item,
+                                cantidad: Math.min(20,Math.max(1,item.cantidad + delta)),
+                            }
+                            :item
+                        )
+
+                    );
+        };
+
+        const agregarCarrito = (producto: Producto) => {
+            
+            SetCarrito(prev =>  [...prev, {...producto, cantidad: 1}]);
+            setMensaje(`"${producto.nombre}" agregado`); 
+
+            setTimeout(() => {
+             setMensaje("");
+            }, 3000);
+        };
+
+        const Total = () => {
+            return carrito.reduce((total, item) => total + item.cantidad*10 /*pendiente cantidad de cada cancion*/
+         
+        
+
+//si, vamos al siguiente paso.
+    return (
+           <BarraLateral />  
+                );
+                
+
+            /* <h4> Total: ${Total()} </h4>*/
+        };
+
+        export default Pag_Principal;
+
