@@ -1,0 +1,9 @@
+getcwd - obtener el directorio de trabajo actual, 
+devuelve una cadena de la ruta absoluta del directorio actualy la guarda en el buf que es el 
+primer argmento al copiarla de un nombre de ruta del directorio actual, si la longitud es mayor, regresa null
+sizeof()- el tamaño de almacenamiento de los objetos que referencia, en bytes.
+fgets() - entrada de caracteres y strings, lee caracter de tamaño inferior a stream para almacenarlos
+en el buf deteniendose en un EOF o nueva linea con un bit nulo de terminacion '\0', regresa s en caso de exito y
+null de lo contrario.
+stdin - entrada estandar.
+strcmp - .
